@@ -14,6 +14,10 @@ are also included.
 
 The environment pins the CUDA 13 PyTorch build the paper used and needs an NVIDIA driver that supports CUDA 13. With it, on an NVIDIA RTX PRO 5000 Blackwell, retrained runs match the paper's to the last digit, except SurvTRACE and SurvLatent ODE on landmarked MIMIC-IV and MC-MED, which were trained on other GPUs. Other GPUs move the neural models' per-seed scores slightly.
 
+    pip install -r requirements.txt
+
+installs the same package versions on Linux, Windows, and Apple-silicon macOS with Python 3.10, without the CUDA 13 build, so the neural models' per-seed scores differ slightly from the paper's. On macOS, pip builds `ecos` from source, which needs the Xcode command-line tools.
+
 ## Reproduce the tables
 
     for c in configs/*_adm*.yaml configs/*_lmk_cr.yaml; do python preprocess.py --config $c; done
