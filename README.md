@@ -12,6 +12,8 @@ are also included.
     conda env create -f environment.yml
     conda activate survbench
 
+The environment pins the CUDA 13 PyTorch build the paper used and needs an NVIDIA driver that supports CUDA 13. With it, on an NVIDIA RTX PRO 5000 Blackwell, retrained runs match the paper's to the last digit, except SurvTRACE and SurvLatent ODE on landmarked MIMIC-IV and MC-MED, which were trained on other GPUs. Other GPUs move the neural models' per-seed scores slightly.
+
 ## Reproduce the tables
 
     for c in configs/*_adm*.yaml configs/*_lmk_cr.yaml; do python preprocess.py --config $c; done

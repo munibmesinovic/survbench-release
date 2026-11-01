@@ -38,9 +38,7 @@ def _resolve():
             return "gpu", cudf, cupy, scaler
         except ImportError as e:
             raise BackendUnavailableError(
-                "compute.backend=gpu requested but cuDF/CuPy/cuML "
-                "could not be imported. Install via: "
-                "pip install -r requirements-gpu.txt"
+                "compute.backend=gpu needs cuDF, CuPy, and cuML"
             ) from e
 
 

@@ -452,6 +452,7 @@ def run(
     patience: int = 15,
     batch_size: int = 64,
     input_mode: str = "static",
+    device: str = "auto",
     seed: int = 42,
     skip_test: bool = False,
     save_dir: Optional[Path] = None,
@@ -541,7 +542,7 @@ def run(
             shared_dims=shared_dims_list, cs_dims=cs_dims_list,
             dropout=dropout, lr=lr, weight_decay=weight_decay,
             alpha_rank=alpha_rank, epochs=epochs, patience=patience,
-            batch_size=batch_size, modality_info=modality_info,
+            batch_size=batch_size, modality_info=modality_info, device=device,
         )
     wall_time_seconds = wc.seconds
     device = next(model.parameters()).device

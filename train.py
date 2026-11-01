@@ -77,9 +77,20 @@ def train_cell(arm, dataset, model, seed, entry, out_dir, split_seed=None):
     input_mode = input_mode_of(model)
     if input_mode is not None:
         kwargs["input_mode"] = input_mode
+    if entry.get("device"):
+        kwargs["device"] = entry["device"]
 
+    threads = entry.get("threads")
+    if threads:
+        import torch
+        previous = torch.get_num_threads()
+        torch.set_num_threads(threads)
     _set_seed(seed)
-    result = invoke(model, config, **kwargs)
+    try:
+        result = invoke(model, config, **kwargs)
+    finally:
+        if threads:
+            torch.set_num_threads(previous)
     assert_echo_matches(model, winner, result.get("effective_hparams"))
     if input_mode is not None and result.get("input_mode") != input_mode:
         raise AssertionError(

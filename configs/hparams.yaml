@@ -38,6 +38,7 @@ cr/eicu/deephit:
   num_risks: 3
   param_count: 234430
 cr/eicu/deephit-summary:
+  device: cpu
   effective_hparams:
     alpha_rank: 0.1
     batch_size: 64
@@ -55,6 +56,7 @@ cr/eicu/deephit-summary:
   num_bins: 10
   num_risks: 3
   param_count: 172930
+  threads: 8
 cr/eicu/dynamic_deephit:
   effective_hparams:
     alpha: 0.01242592592868867
@@ -153,6 +155,7 @@ cr/hirid/deephit:
   num_risks: 2
   param_count: 72020
 cr/hirid/deephit-summary:
+  device: cpu
   effective_hparams:
     alpha_rank: 0.1
     batch_size: 64
@@ -170,6 +173,7 @@ cr/hirid/deephit-summary:
   num_bins: 10
   num_risks: 2
   param_count: 49120
+  threads: 8
 cr/hirid/dynamic_deephit:
   effective_hparams:
     alpha: 0.023138316661691617
@@ -395,6 +399,7 @@ cr/mimiciv/deephit:
   num_risks: 3
   param_count: 255630
 cr/mimiciv/deephit-summary:
+  device: cpu
   effective_hparams:
     alpha_rank: 0.1
     batch_size: 64
@@ -412,6 +417,7 @@ cr/mimiciv/deephit-summary:
   num_bins: 10
   num_risks: 3
   param_count: 89330
+  threads: 8
 cr/mimiciv/dynamic_deephit:
   effective_hparams:
     alpha: 0.16206567392037177
