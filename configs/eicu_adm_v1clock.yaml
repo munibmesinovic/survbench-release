@@ -1,0 +1,81 @@
+dataset:
+  name: eicu
+  base_dir: raw/eicu
+  files:
+    patient: patient.csv.gz
+    lab: lab.csv.gz
+    vital_periodic: vitalPeriodic.csv.gz
+    vital_aperiodic: vitalAperiodic.csv.gz
+  cohort:
+    min_age: 18
+    min_stay_hours: 24
+    max_age: 89
+  competing_risks:
+    enabled: true
+    post_icu_death_source: null
+    outcome_mapping:
+      0: "Censored (ICU discharge, or truncated at H)"
+      1: "In-ICU death"
+      3: "ICU discharge alive"
+  cache_dir: cache/eicu
+preprocessing:
+  mask_post_event_windows: true
+  num_windows: 6
+  window_size_hours: 4
+  max_hours: 24
+  max_carry_forward_hours: 24
+  max_horizon_hours: 240
+  n_time_bins: 10
+  discretisation_method: quantiles
+  missingness_threshold: 0.01
+  event_col: event
+  duration_col: duration
+  imputation:
+    static: mean
+    dynamic: zero
+  scaling:
+    method: standard
+    z_clip: 10.0
+  landmarking:
+    enabled: false
+splits:
+  train: 0.7
+  val: 0.1
+  test: 0.2
+  seed: 42
+  split_by: patient
+modalities:
+  timeseries: true
+  static: true
+  icd: false
+  radiology: false
+compute:
+  backend: cpu
+  gpu_chunksize: 5000000
+
+evaluation:
+  discharge_as: censored
+  censor_causes: [3]
+
+output:
+  dir: arrays/sr_eicu
+  benchmark_version: v2-adm-v1clock
+  prefix: eicu
+  save_format: numpy
+  files:
+    x_train: x_train_eicu.npy
+    x_val: x_val_eicu.npy
+    x_test: x_test_eicu.npy
+    y_train: y_train_surv_eicu.p
+    y_val: y_val_surv_eicu.p
+    durations_test: durations_test_eicu.npy
+    events_test: events_test_eicu.npy
+    cuts: cuts_eicu.npy
+    out_features: out_features_eicu.npy
+    n_events: n_events_eicu.npy
+    feature_names: feature_names.pkl
+    modality_info: modality_info.pkl
+    scaler: scaler.pkl
+    train_mask: x_train_eicu_mask.npy
+    val_mask: x_val_eicu_mask.npy
+    test_mask: x_test_eicu_mask.npy

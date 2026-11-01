@@ -1,0 +1,70 @@
+dataset:
+  name: hirid
+  base_dir: raw/hirid
+  cache_dir: cache/hirid_lmk_cr
+  files:
+    labels: benchmark_output/hirid_patient_labels.csv
+    general_table: general_table.csv
+    general_table_extended: benchmark_output/general_table_extended.parquet
+    imputed_dir: imputed_stage/csv
+  cohort:
+    min_stay_hours: 0
+    max_age: 120
+  competing_risks:
+    enabled: true
+    outcome_mapping:
+      0: Administrative truncation at H
+      1: In-ICU death
+      3: ICU discharge alive
+    post_icu_death_source: null
+preprocessing:
+  mask_post_event_windows: true
+  num_windows: 6
+  window_size_hours: 4
+  max_hours: 24
+  max_carry_forward_hours: 24
+  max_horizon_hours: 240
+  n_time_bins: 10
+  discretisation_method: quantiles
+  missingness_threshold: 0.0
+  event_col: event
+  duration_col: duration
+  scaling:
+    method: standard
+    z_clip: 10.0
+  landmarking:
+    enabled: true
+splits:
+  train: 0.7
+  val: 0.1
+  test: 0.2
+  seed: 42
+modalities:
+  timeseries: true
+  static: true
+  icd: false
+  radiology: false
+compute:
+  backend: auto
+  gpu_chunksize: 5000000
+output:
+  dir: arrays/cr_lmk_hirid
+  prefix: hirid
+  save_format: numpy
+  files:
+    x_train: x_train_hirid.npy
+    x_val: x_val_hirid.npy
+    x_test: x_test_hirid.npy
+    y_train: y_train_surv_hirid.p
+    y_val: y_val_surv_hirid.p
+    durations_test: durations_test_hirid.npy
+    events_test: events_test_hirid.npy
+    cuts: cuts_hirid.npy
+    out_features: out_features_hirid.npy
+    n_events: n_events_hirid.npy
+    feature_names: feature_names_hirid.pkl
+    modality_info: modality_info_hirid.pkl
+    scaler: scaler.pkl
+    train_mask: x_train_hirid_mask.npy
+    val_mask: x_val_hirid_mask.npy
+    test_mask: x_test_hirid_mask.npy

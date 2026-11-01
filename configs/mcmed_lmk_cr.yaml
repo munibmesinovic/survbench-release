@@ -1,0 +1,99 @@
+dataset:
+  name: mcmed
+  event_clock: decision
+  version: "1.0.1"
+  base_dir: raw/mcmed
+  cache_dir: cache/mcmed
+
+  files:
+    labels: visits.csv
+    static: visits.csv
+    timeseries_vitals: numerics.csv
+    timeseries_lab: labs.csv
+    icd_codes: pmh.csv
+    radiology_embeddings: rads.csv
+
+  cohort:
+    min_stay_hours: 0.0
+    max_age: 120
+
+  competing_risks:
+    enabled: true
+    outcome_mapping:
+      0: "Administrative truncation at H"
+      1: "ICU Admission"
+      2: "Hospital Admission"
+      3: "Observation"
+      4: "Discharge home"
+
+preprocessing:
+  mask_post_event_windows: true
+  num_windows: 6
+  window_size_hours: 1
+  max_hours: 6
+  max_carry_forward_hours: 24
+  max_horizon_hours: 24
+  n_time_bins: 10
+  discretisation_method: quantiles
+  missingness_threshold: 0.01
+  event_col: event
+  duration_col: duration
+  landmarking:
+    enabled: true
+  imputation:
+    static: mean
+    dynamic: zero
+  scaling:
+    method: standard
+    z_clip: 10.0
+
+splits:
+  train: 0.7
+  val: 0.1
+  test: 0.2
+  seed: 42
+  split_by: patient
+
+modalities:
+  timeseries: true
+  static: true
+  icd: true
+  radiology: true
+
+icd_processing:
+  top_n_codes: 500
+
+radiology_processing:
+  model_name: yikuan8/Clinical-Longformer
+  max_length: 1024
+  batch_size: 32
+  pooling: mean
+  bert_batch_size: 32
+  bert_max_length: 1024
+
+compute:
+  backend: cpu
+  gpu_chunksize: 5000000
+
+output:
+  dir: arrays/cr_lmk_mcmed
+  prefix: mcmed
+  save_format: numpy
+
+  files:
+    x_train: x_train_mcmed.npy
+    x_val: x_val_mcmed.npy
+    x_test: x_test_mcmed.npy
+    y_train: y_train_surv_mcmed.p
+    y_val: y_val_surv_mcmed.p
+    durations_test: durations_test_mcmed.npy
+    events_test: events_test_mcmed.npy
+    cuts: cuts_mcmed.npy
+    out_features: out_features_mcmed.npy
+    n_events: n_events_mcmed.npy
+    feature_names: feature_names_mcmed.pkl
+    modality_info: modality_info_mcmed.pkl
+    scaler: scaler_mcmed.pkl
+    train_mask: x_train_mcmed_mask.npy
+    val_mask: x_val_mcmed_mask.npy
+    test_mask: x_test_mcmed_mask.npy

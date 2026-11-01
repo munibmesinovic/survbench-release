@@ -1,0 +1,1381 @@
+cr/eicu/cox:
+  effective_hparams:
+    l1_ratio: 0.0
+    n_features: 15
+    penalizer: 0.0018329807108324356
+  modalities: null
+  num_bins: null
+  num_risks: 3
+  param_count: null
+cr/eicu/deephit:
+  effective_hparams:
+    alpha_rank: 0.5
+    batch_size: 32
+    cs_dims:
+    - 100
+    dropout: 0.13196173194724495
+    lr: 0.00013586524055556038
+    num_bins: 10
+    num_risks: 3
+    shared_dims:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    weight_decay: 0.0003029849277442893
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 234430
+cr/eicu/dynamic_deephit:
+  effective_hparams:
+    alpha: 0.01242592592868867
+    batch_size: 64
+    cs_hidden: 100
+    dropout: 0.45668192200491786
+    gamma: 3.4550293518590247
+    lr: 2.616274174976868e-05
+    num_bins: 10
+    num_risks: 3
+    rnn_hidden: 200
+    rnn_layers: 3
+    weight_decay: 0.0002345035618729699
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 338976
+cr/eicu/dysurv:
+  effective_hparams:
+    alpha_ae: 1.0
+    alpha_kl: 0.01
+    alpha_surv: 1.0
+    batch_size: 128
+    dropout: 0.3
+    encoded_features: 16
+    lr: 0.008942530358105492
+    num_bins: 10
+    num_risks: 3
+    pos_weight: 1.0
+    weight_decay: 1.3025045834941418e-05
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 1851732
+cr/eicu/transformer:
+  effective_hparams:
+    alpha: 0.8804172040023087
+    aux_recon: false
+    batch_size: 64
+    d_model: 64
+    encoder_dropout: 0.034583497727569024
+    ff_dim: 128
+    head_dropout: 0.3487143865722818
+    head_hidden: 64
+    icd_bottleneck: none
+    input_width: 117
+    lr: 0.0006901845408537135
+    n_heads: 8
+    n_layers: 1
+    num_bins: 10
+    num_risks: 3
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 0.0003725688126549446
+  modalities:
+  - dynamic
+  - static
+  num_bins: 10
+  num_risks: 3
+  param_count: 66398
+cr/hirid/cox:
+  effective_hparams:
+    l1_ratio: 0.0
+    n_features: 17
+    penalizer: 0.00016237767391887208
+  modalities: null
+  num_bins: null
+  num_risks: 2
+  param_count: null
+cr/hirid/deephit:
+  effective_hparams:
+    alpha_rank: 0.5
+    batch_size: 32
+    cs_dims:
+    - 100
+    dropout: 0.1809448900047296
+    lr: 1.092411835137167e-05
+    num_bins: 10
+    num_risks: 2
+    shared_dims:
+    - 300
+    weight_decay: 0.0001999252682769411
+  modalities: null
+  num_bins: 10
+  num_risks: 2
+  param_count: 72020
+cr/hirid/dynamic_deephit:
+  effective_hparams:
+    alpha: 0.023138316661691617
+    batch_size: 32
+    cs_hidden: 100
+    dropout: 0.26163642329064885
+    gamma: 0.19235094528956295
+    lr: 0.0005358308532764555
+    num_bins: 10
+    num_risks: 2
+    rnn_hidden: 200
+    rnn_layers: 3
+    weight_decay: 1.1239303455169115e-07
+  modalities: null
+  num_bins: 10
+  num_risks: 2
+  param_count: 286784
+cr/hirid/dysurv:
+  effective_hparams:
+    alpha_ae: 1.0
+    alpha_kl: 0.01
+    alpha_surv: 1.0
+    batch_size: 64
+    dropout: 0.3
+    encoded_features: 64
+    lr: 0.0020240286281332813
+    num_bins: 10
+    num_risks: 2
+    pos_weight: 1.0
+    weight_decay: 3.570522756718297e-06
+  modalities: null
+  num_bins: 10
+  num_risks: 2
+  param_count: 285139
+cr/hirid/transformer:
+  effective_hparams:
+    alpha: 0.8804172040023087
+    aux_recon: false
+    batch_size: 64
+    d_model: 64
+    encoder_dropout: 0.034583497727569024
+    ff_dim: 128
+    head_dropout: 0.3487143865722818
+    head_hidden: 64
+    icd_bottleneck: none
+    input_width: 35
+    lr: 0.0006901845408537135
+    n_heads: 8
+    n_layers: 1
+    num_bins: 10
+    num_risks: 2
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 0.0003725688126549446
+  modalities:
+  - dynamic
+  - static
+  num_bins: 10
+  num_risks: 2
+  param_count: 56212
+cr/mcmed/cox:
+  effective_hparams:
+    l1_ratio: 0.0
+    n_features: 23
+    penalizer: 0.0206913808111479
+  modalities: null
+  num_bins: null
+  num_risks: 4
+  param_count: null
+cr/mcmed/deephit:
+  effective_hparams:
+    alpha_rank: 0.1
+    batch_size: 32
+    cs_dims:
+    - 200
+    - 200
+    - 200
+    dropout: 0.14094325220431864
+    lr: 2.8749421485268483e-05
+    num_bins: 10
+    num_risks: 4
+    shared_dims:
+    - 200
+    - 200
+    - 200
+    - 200
+    - 200
+    weight_decay: 5.359132973302402e-07
+  modalities: null
+  num_bins: 10
+  num_risks: 4
+  param_count: 681240
+cr/mcmed/dynamic_deephit:
+  effective_hparams:
+    alpha: 0.019679105026092426
+    batch_size: 64
+    cs_hidden: 100
+    dropout: 0.2609823947107151
+    gamma: 0.1631919839444547
+    lr: 6.585623287485873e-05
+    num_bins: 10
+    num_risks: 4
+    rnn_hidden: 200
+    rnn_layers: 3
+    weight_decay: 4.1078880657676764e-06
+  modalities: null
+  num_bins: 10
+  num_risks: 4
+  param_count: 339064
+cr/mcmed/dysurv:
+  effective_hparams:
+    alpha_ae: 1.0
+    alpha_kl: 0.01
+    alpha_surv: 1.0
+    batch_size: 32
+    dropout: 0.3
+    encoded_features: 64
+    lr: 0.003409399693879268
+    num_bins: 10
+    num_risks: 4
+    pos_weight: 1.0
+    weight_decay: 3.986530940545291e-05
+  modalities: null
+  num_bins: 10
+  num_risks: 4
+  param_count: 1722449
+cr/mcmed/transformer:
+  effective_hparams:
+    alpha: 0.8768253724774214
+    aux_recon: false
+    batch_size: 64
+    d_model: 128
+    encoder_dropout: 0.2105295490653104
+    ff_dim: 128
+    head_dropout: 0.40351105606985416
+    head_hidden: 64
+    icd_bottleneck: none
+    input_width: 95
+    lr: 0.000628201581041426
+    n_heads: 8
+    n_layers: 3
+    num_bins: 10
+    num_risks: 4
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 0.00021902131065319727
+  modalities:
+  - dynamic
+  - static
+  num_bins: 10
+  num_risks: 4
+  param_count: 376488
+cr/mcmed/transformer-mm:
+  effective_hparams:
+    alpha: 0.8974877829794856
+    aux_recon: false
+    batch_size: 64
+    d_model: 128
+    encoder_dropout: 0.10156239849650214
+    ff_dim: 512
+    head_dropout: 0.0029837894630184714
+    head_hidden: 64
+    icd_bottleneck: 32
+    input_width: 255
+    lr: 4.636472290282464e-05
+    n_heads: 4
+    n_layers: 4
+    num_bins: 10
+    num_risks: 4
+    pooling: mean
+    radiology_bottleneck: 128
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 0.009777103558712679
+  modalities:
+  - dynamic
+  - static
+  - icd
+  - radiology
+  num_bins: 10
+  num_risks: 4
+  param_count: 1005768
+cr/mimiciv/cox:
+  effective_hparams:
+    l1_ratio: 0.0
+    n_features: 40
+    penalizer: 0.0011288378916846883
+  modalities: null
+  num_bins: null
+  num_risks: 3
+  param_count: null
+cr/mimiciv/deephit:
+  effective_hparams:
+    alpha_rank: 0.1
+    batch_size: 128
+    cs_dims:
+    - 50
+    - 50
+    dropout: 0.3126219637224776
+    lr: 2.204242412477902e-05
+    num_bins: 10
+    num_risks: 3
+    shared_dims:
+    - 300
+    - 300
+    - 300
+    weight_decay: 1.8693470703706076e-07
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 255630
+cr/mimiciv/dynamic_deephit:
+  effective_hparams:
+    alpha: 0.16206567392037177
+    batch_size: 16
+    cs_hidden: 200
+    dropout: 0.5860566529142023
+    gamma: 3.0097273776147326
+    lr: 2.0794053992139293e-05
+    num_bins: 10
+    num_risks: 3
+    rnn_hidden: 100
+    rnn_layers: 2
+    weight_decay: 2.7637615125314237e-07
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 215823
+cr/mimiciv/dysurv:
+  effective_hparams:
+    alpha_ae: 1.0
+    alpha_kl: 0.01
+    alpha_surv: 1.0
+    batch_size: 128
+    dropout: 0.3
+    encoded_features: 64
+    lr: 0.003553056570816697
+    num_bins: 10
+    num_risks: 3
+    pos_weight: 1.0
+    weight_decay: 0.00017553232469765675
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 743710
+cr/mimiciv/transformer:
+  effective_hparams:
+    alpha: 0.7269975514741647
+    aux_recon: false
+    batch_size: 64
+    d_model: 64
+    encoder_dropout: 0.0036321865439170875
+    ff_dim: 512
+    head_dropout: 0.2669332646242783
+    head_hidden: 64
+    icd_bottleneck: none
+    input_width: 64
+    lr: 0.0004956065185742166
+    n_heads: 4
+    n_layers: 2
+    num_bins: 10
+    num_risks: 3
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 0.002414768371225998
+  modalities:
+  - dynamic
+  - static
+  num_bins: 10
+  num_risks: 3
+  param_count: 195550
+cr/mimiciv/transformer-mm:
+  effective_hparams:
+    alpha: 0.6802840083263662
+    aux_recon: false
+    batch_size: 64
+    d_model: 256
+    encoder_dropout: 0.05517380795091015
+    ff_dim: 512
+    head_dropout: 0.07544368219005798
+    head_hidden: 32
+    icd_bottleneck: 64
+    input_width: 160
+    lr: 0.0005675902109160989
+    n_heads: 4
+    n_layers: 4
+    num_bins: 10
+    num_risks: 3
+    pooling: mean
+    radiology_bottleneck: 32
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 0.0001911413210729719
+  modalities:
+  - dynamic
+  - static
+  - icd
+  - radiology
+  num_bins: 10
+  num_risks: 3
+  param_count: 2323550
+cr_lmk/eicu/cox:
+  effective_hparams:
+    l1_ratio: 0.0
+    n_features: 15
+    penalizer: 0.01
+  modalities: null
+  num_bins: null
+  num_risks: 3
+  param_count: null
+cr_lmk/eicu/deephit:
+  effective_hparams:
+    alpha_rank: 0.1
+    batch_size: 64
+    cs_dims:
+    - 100
+    dropout: 0.4
+    lr: 0.0001
+    num_bins: 10
+    num_risks: 3
+    shared_dims:
+    - 100
+    - 100
+    weight_decay: 0.0
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 50530
+cr_lmk/eicu/dynamic_deephit:
+  effective_hparams:
+    alpha: 0.1
+    batch_size: 32
+    cs_hidden: 100
+    dropout: 0.4
+    gamma: 1.0
+    lr: 0.0001
+    num_bins: 10
+    num_risks: 3
+    rnn_hidden: 100
+    rnn_layers: 2
+    weight_decay: 1.0e-05
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 125287
+cr_lmk/eicu/dysurv:
+  effective_hparams:
+    alpha_ae: 1.0
+    alpha_kl: 0.01
+    alpha_surv: 1.0
+    batch_size: 64
+    dropout: 0.3
+    encoded_features: 32
+    lr: 0.001
+    num_bins: 10
+    num_risks: 3
+    pos_weight: 1.0
+    weight_decay: 0.0001
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 2269758
+cr_lmk/eicu/transformer:
+  effective_hparams:
+    alpha: 0.5
+    aux_recon: false
+    batch_size: 128
+    d_model: 128
+    encoder_dropout: 0.1
+    ff_dim: 256
+    head_dropout: 0.3
+    head_hidden: 32
+    icd_bottleneck: none
+    input_width: 128
+    lr: 0.0001
+    n_heads: 4
+    n_layers: 3
+    num_bins: 10
+    num_risks: 3
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 1.0e-05
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 456830
+cr_lmk/hirid/cox:
+  effective_hparams:
+    l1_ratio: 0.0
+    n_features: 17
+    penalizer: 0.01
+  modalities: null
+  num_bins: null
+  num_risks: 2
+  param_count: null
+cr_lmk/hirid/deephit:
+  effective_hparams:
+    alpha_rank: 0.1
+    batch_size: 64
+    cs_dims:
+    - 100
+    dropout: 0.4
+    lr: 0.0001
+    num_bins: 10
+    num_risks: 2
+    shared_dims:
+    - 100
+    - 100
+    weight_decay: 0.0
+  modalities: null
+  num_bins: 10
+  num_risks: 2
+  param_count: 38320
+cr_lmk/hirid/dynamic_deephit:
+  effective_hparams:
+    alpha: 0.1
+    batch_size: 32
+    cs_hidden: 100
+    dropout: 0.4
+    gamma: 1.0
+    lr: 0.0001
+    num_bins: 10
+    num_risks: 2
+    rnn_hidden: 100
+    rnn_layers: 2
+    weight_decay: 1.0e-05
+  modalities: null
+  num_bins: 10
+  num_risks: 2
+  param_count: 86184
+cr_lmk/hirid/dysurv:
+  effective_hparams:
+    alpha_ae: 1.0
+    alpha_kl: 0.01
+    alpha_surv: 1.0
+    batch_size: 64
+    dropout: 0.3
+    encoded_features: 32
+    lr: 0.001
+    num_bins: 10
+    num_risks: 2
+    pos_weight: 1.0
+    weight_decay: 0.0001
+  modalities: null
+  num_bins: 10
+  num_risks: 2
+  param_count: 175507
+cr_lmk/hirid/transformer:
+  effective_hparams:
+    alpha: 0.5
+    aux_recon: false
+    batch_size: 128
+    d_model: 128
+    encoder_dropout: 0.1
+    ff_dim: 256
+    head_dropout: 0.3
+    head_hidden: 32
+    icd_bottleneck: none
+    input_width: 35
+    lr: 0.0001
+    n_heads: 4
+    n_layers: 3
+    num_bins: 10
+    num_risks: 2
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 1.0e-05
+  modalities: null
+  num_bins: 10
+  num_risks: 2
+  param_count: 440404
+cr_lmk/mcmed/cox:
+  effective_hparams:
+    l1_ratio: 0.0
+    n_features: 23
+    penalizer: 0.01
+  modalities: null
+  num_bins: null
+  num_risks: 4
+  param_count: null
+cr_lmk/mcmed/deephit:
+  effective_hparams:
+    alpha_rank: 0.1
+    batch_size: 64
+    cs_dims:
+    - 100
+    dropout: 0.4
+    lr: 0.0001
+    num_bins: 10
+    num_risks: 4
+    shared_dims:
+    - 100
+    - 100
+    weight_decay: 0.0
+  modalities: null
+  num_bins: 10
+  num_risks: 4
+  param_count: 67340
+cr_lmk/mcmed/dynamic_deephit:
+  effective_hparams:
+    alpha: 0.1
+    batch_size: 32
+    cs_hidden: 100
+    dropout: 0.4
+    gamma: 1.0
+    lr: 0.0001
+    num_bins: 10
+    num_risks: 4
+    rnn_hidden: 100
+    rnn_layers: 2
+    weight_decay: 1.0e-05
+  modalities: null
+  num_bins: 10
+  num_risks: 4
+  param_count: 126464
+cr_lmk/mcmed/dysurv:
+  effective_hparams:
+    alpha_ae: 1.0
+    alpha_kl: 0.01
+    alpha_surv: 1.0
+    batch_size: 64
+    dropout: 0.3
+    encoded_features: 32
+    lr: 0.001
+    num_bins: 10
+    num_risks: 4
+    pos_weight: 1.0
+    weight_decay: 0.0001
+  modalities: null
+  num_bins: 10
+  num_risks: 4
+  param_count: 1565777
+cr_lmk/mcmed/transformer:
+  effective_hparams:
+    alpha: 0.5
+    aux_recon: false
+    batch_size: 128
+    d_model: 128
+    encoder_dropout: 0.1
+    ff_dim: 256
+    head_dropout: 0.3
+    head_hidden: 32
+    icd_bottleneck: none
+    input_width: 95
+    lr: 0.0001
+    n_heads: 4
+    n_layers: 3
+    num_bins: 10
+    num_risks: 4
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 1.0e-05
+  modalities: null
+  num_bins: 10
+  num_risks: 4
+  param_count: 457128
+cr_lmk/mcmed/transformer-mm:
+  effective_hparams:
+    alpha: 0.5
+    aux_recon: false
+    batch_size: 128
+    d_model: 128
+    encoder_dropout: 0.1
+    ff_dim: 256
+    head_dropout: 0.3
+    head_hidden: 32
+    icd_bottleneck: none
+    input_width: 1363
+    lr: 0.0001
+    n_heads: 4
+    n_layers: 3
+    num_bins: 10
+    num_risks: 4
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 1.0e-05
+  modalities:
+  - dynamic
+  - static
+  - icd
+  - radiology
+  num_bins: 10
+  num_risks: 4
+  param_count: 619432
+cr_lmk/mimiciv/cox:
+  effective_hparams:
+    l1_ratio: 0.0
+    n_features: 40
+    penalizer: 0.01
+  modalities: null
+  num_bins: null
+  num_risks: 3
+  param_count: null
+cr_lmk/mimiciv/deephit:
+  effective_hparams:
+    alpha_rank: 0.1
+    batch_size: 64
+    cs_dims:
+    - 100
+    dropout: 0.4
+    lr: 0.0001
+    num_bins: 10
+    num_risks: 3
+    shared_dims:
+    - 100
+    - 100
+    weight_decay: 0.0
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 60530
+cr_lmk/mimiciv/dynamic_deephit:
+  effective_hparams:
+    alpha: 0.1
+    batch_size: 32
+    cs_hidden: 100
+    dropout: 0.4
+    gamma: 1.0
+    lr: 0.0001
+    num_bins: 10
+    num_risks: 3
+    rnn_hidden: 100
+    rnn_layers: 2
+    weight_decay: 1.0e-05
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 106023
+cr_lmk/mimiciv/dysurv:
+  effective_hparams:
+    alpha_ae: 1.0
+    alpha_kl: 0.01
+    alpha_surv: 1.0
+    batch_size: 64
+    dropout: 0.3
+    encoded_features: 32
+    lr: 0.001
+    num_bins: 10
+    num_risks: 3
+    pos_weight: 1.0
+    weight_decay: 0.0001
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 614014
+cr_lmk/mimiciv/transformer:
+  effective_hparams:
+    alpha: 0.5
+    aux_recon: false
+    batch_size: 128
+    d_model: 128
+    encoder_dropout: 0.1
+    ff_dim: 256
+    head_dropout: 0.3
+    head_hidden: 32
+    icd_bottleneck: none
+    input_width: 64
+    lr: 0.0001
+    n_heads: 4
+    n_layers: 3
+    num_bins: 10
+    num_risks: 3
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 1.0e-05
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 448638
+cr_lmk/mimiciv/transformer-mm:
+  effective_hparams:
+    alpha: 0.5
+    aux_recon: false
+    batch_size: 128
+    d_model: 128
+    encoder_dropout: 0.1
+    ff_dim: 256
+    head_dropout: 0.3
+    head_hidden: 32
+    icd_bottleneck: none
+    input_width: 1332
+    lr: 0.0001
+    n_heads: 4
+    n_layers: 3
+    num_bins: 10
+    num_risks: 3
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 1.0e-05
+  modalities:
+  - dynamic
+  - static
+  - icd
+  - radiology
+  num_bins: 10
+  num_risks: 3
+  param_count: 610942
+sr/eicu/cox:
+  effective_hparams:
+    l1_ratio: 0.0
+    n_features: 15
+    penalizer: 0.004832930238571752
+  modalities: null
+  num_bins: null
+  num_risks: null
+  param_count: null
+sr/eicu/deephit:
+  effective_hparams:
+    alpha_rank: 1.0
+    batch_size: 32
+    cs_dims:
+    - 300
+    - 300
+    - 300
+    - 300
+    - 300
+    dropout: 0.009824329656378472
+    lr: 6.713635921002125e-05
+    num_bins: 10
+    num_risks: 1
+    shared_dims:
+    - 50
+    weight_decay: 1.313041272876877e-05
+  modalities: null
+  num_bins: 10
+  num_risks: 1
+  param_count: 387910
+sr/eicu/dynamic_deephit:
+  effective_hparams:
+    alpha: 0.013100444438033347
+    batch_size: 64
+    cs_hidden: 100
+    dropout: 0.33982750875396067
+    gamma: 2.8808121184687794
+    lr: 5.194755596073833e-05
+    num_bins: 10
+    num_risks: 1
+    rnn_hidden: 100
+    rnn_layers: 3
+    weight_decay: 0.0004306653287205671
+  modalities: null
+  num_bins: 10
+  num_risks: 1
+  param_count: 119956
+sr/eicu/dysurv:
+  effective_hparams:
+    alpha_ae: 1.0
+    alpha_kl: 0.01
+    alpha_surv: 1.0
+    batch_size: 128
+    dropout: 0.3
+    encoded_features: 16
+    lr: 0.00017240460099242303
+    num_bins: 10
+    num_risks: 1
+    pos_weight: 1.0
+    weight_decay: 0.001250071223083626
+  modalities: null
+  num_bins: 10
+  num_risks: 1
+  param_count: 1009546
+sr/eicu/transformer:
+  effective_hparams:
+    alpha: 0.8648669077785791
+    aux_recon: false
+    batch_size: 64
+    d_model: 256
+    encoder_dropout: 0.29063643631792935
+    ff_dim: 512
+    head_dropout: 0.4408676809274264
+    head_hidden: 32
+    icd_bottleneck: none
+    input_width: 117
+    lr: 0.00014200860749035525
+    n_heads: 2
+    n_layers: 2
+    num_bins: 10
+    num_risks: 1
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 9.124512203432786e-05
+  modalities:
+  - dynamic
+  - static
+  num_bins: 10
+  num_risks: 1
+  param_count: 1184426
+sr/hirid/cox:
+  effective_hparams:
+    l1_ratio: 0.0
+    n_features: 17
+    penalizer: 0.0001
+  modalities: null
+  num_bins: null
+  num_risks: null
+  param_count: null
+sr/hirid/deephit:
+  effective_hparams:
+    alpha_rank: 0.1
+    batch_size: 32
+    cs_dims:
+    - 200
+    dropout: 0.2031202992115278
+    lr: 3.4325493668451645e-05
+    num_bins: 10
+    num_risks: 1
+    shared_dims:
+    - 200
+    weight_decay: 7.117298842847763e-07
+  modalities: null
+  num_bins: 10
+  num_risks: 1
+  param_count: 50010
+sr/hirid/dynamic_deephit:
+  effective_hparams:
+    alpha: 0.03748978123736121
+    batch_size: 32
+    cs_hidden: 200
+    dropout: 0.23863345712936726
+    gamma: 0.6625382150153905
+    lr: 6.077196748106936e-05
+    num_bins: 10
+    num_risks: 1
+    rnn_hidden: 50
+    rnn_layers: 3
+    weight_decay: 0.0008967381549523706
+  modalities: null
+  num_bins: 10
+  num_risks: 1
+  param_count: 82274
+sr/hirid/dysurv:
+  effective_hparams:
+    alpha_ae: 1.0
+    alpha_kl: 0.01
+    alpha_surv: 1.0
+    batch_size: 128
+    dropout: 0.3
+    encoded_features: 16
+    lr: 0.0003264732289988363
+    num_bins: 10
+    num_risks: 1
+    pos_weight: 1.0
+    weight_decay: 0.002241935267034321
+  modalities: null
+  num_bins: 10
+  num_risks: 1
+  param_count: 103856
+sr/hirid/transformer:
+  effective_hparams:
+    alpha: 0.6917563736897109
+    aux_recon: false
+    batch_size: 64
+    d_model: 256
+    encoder_dropout: 0.08942937095806822
+    ff_dim: 512
+    head_dropout: 0.3640419617024441
+    head_hidden: 32
+    icd_bottleneck: none
+    input_width: 35
+    lr: 0.0009711349227726359
+    n_heads: 4
+    n_layers: 2
+    num_bins: 10
+    num_risks: 1
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 3.431188733579325e-05
+  modalities:
+  - dynamic
+  - static
+  num_bins: 10
+  num_risks: 1
+  param_count: 1163434
+sr/mcmed/cox:
+  effective_hparams:
+    l1_ratio: 0.0
+    n_features: 23
+    penalizer: 0.007847599703514606
+  modalities: null
+  num_bins: null
+  num_risks: 3
+  param_count: null
+sr/mcmed/deephit:
+  effective_hparams:
+    alpha_rank: 0.1
+    batch_size: 128
+    cs_dims:
+    - 200
+    dropout: 0.387955622517388
+    lr: 0.0005173055001116656
+    num_bins: 10
+    num_risks: 3
+    shared_dims:
+    - 300
+    - 300
+    weight_decay: 6.42216158149383e-06
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 300330
+sr/mcmed/dynamic_deephit:
+  effective_hparams:
+    alpha: 0.06981358835748662
+    batch_size: 64
+    cs_hidden: 100
+    dropout: 0.30679966465585795
+    gamma: 0.16529052165773117
+    lr: 0.0005356957575182109
+    num_bins: 10
+    num_risks: 3
+    rnn_hidden: 200
+    rnn_layers: 3
+    weight_decay: 4.1078880657676764e-06
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 327954
+sr/mcmed/dysurv:
+  effective_hparams:
+    alpha_ae: 1.0
+    alpha_kl: 0.01
+    alpha_surv: 1.0
+    batch_size: 64
+    dropout: 0.3
+    encoded_features: 32
+    lr: 0.0033763065335246107
+    num_bins: 10
+    num_risks: 3
+    pos_weight: 1.0
+    weight_decay: 1.98859674490587e-05
+  modalities: null
+  num_bins: 10
+  num_risks: 3
+  param_count: 1282002
+sr/mcmed/transformer:
+  effective_hparams:
+    alpha: 0.898137266022648
+    aux_recon: false
+    batch_size: 256
+    d_model: 128
+    encoder_dropout: 0.21368045523029297
+    ff_dim: 256
+    head_dropout: 0.48039279769027693
+    head_hidden: 64
+    icd_bottleneck: none
+    input_width: 95
+    lr: 0.00014034935464369178
+    n_heads: 4
+    n_layers: 3
+    num_bins: 10
+    num_risks: 3
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 0.00010980158057064183
+  modalities:
+  - dynamic
+  - static
+  num_bins: 10
+  num_risks: 3
+  param_count: 466142
+sr/mcmed/transformer-mm:
+  effective_hparams:
+    alpha: 0.8974894830063997
+    aux_recon: false
+    batch_size: 128
+    d_model: 256
+    encoder_dropout: 0.12539078043660068
+    ff_dim: 512
+    head_dropout: 0.0029837894630184714
+    head_hidden: 32
+    icd_bottleneck: 64
+    input_width: 287
+    lr: 0.0007543635505644603
+    n_heads: 2
+    n_layers: 4
+    num_bins: 10
+    num_risks: 3
+    pooling: mean
+    radiology_bottleneck: 128
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 0.009777103558712679
+  modalities:
+  - dynamic
+  - static
+  - icd
+  - radiology
+  num_bins: 10
+  num_risks: 3
+  param_count: 2429886
+sr/mimiciv/cox:
+  effective_hparams:
+    l1_ratio: 0.0
+    n_features: 39
+    penalizer: 0.0001
+  modalities: null
+  num_bins: null
+  num_risks: null
+  param_count: null
+sr/mimiciv/deephit:
+  effective_hparams:
+    alpha_rank: 0.5
+    batch_size: 32
+    cs_dims:
+    - 100
+    dropout: 0.03250154556427801
+    lr: 5.749891103160552e-05
+    num_bins: 10
+    num_risks: 1
+    shared_dims:
+    - 300
+    weight_decay: 3.729218750219147e-05
+  modalities: null
+  num_bins: 10
+  num_risks: 1
+  param_count: 47810
+sr/mimiciv/dynamic_deephit:
+  effective_hparams:
+    alpha: 0.022253412538134475
+    batch_size: 32
+    cs_hidden: 50
+    dropout: 0.35937879010081564
+    gamma: 0.5685093459880469
+    lr: 1.044023029291001e-05
+    num_bins: 10
+    num_risks: 1
+    rnn_hidden: 200
+    rnn_layers: 1
+    weight_decay: 0.00025779798726598705
+  modalities: null
+  num_bins: 10
+  num_risks: 1
+  param_count: 108103
+sr/mimiciv/dysurv:
+  effective_hparams:
+    alpha_ae: 1.0
+    alpha_kl: 0.01
+    alpha_surv: 1.0
+    batch_size: 128
+    dropout: 0.3
+    encoded_features: 16
+    lr: 0.00017240460099242303
+    num_bins: 10
+    num_risks: 1
+    pos_weight: 1.0
+    weight_decay: 0.001250071223083626
+  modalities: null
+  num_bins: 10
+  num_risks: 1
+  param_count: 315034
+sr/mimiciv/transformer:
+  effective_hparams:
+    alpha: 0.7307066415090222
+    aux_recon: false
+    batch_size: 64
+    d_model: 64
+    encoder_dropout: 0.22285520897896327
+    ff_dim: 512
+    head_dropout: 0.3825855662395239
+    head_hidden: 64
+    icd_bottleneck: none
+    input_width: 64
+    lr: 0.00044080996994413555
+    n_heads: 4
+    n_layers: 2
+    num_bins: 10
+    num_risks: 1
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 1.5602078920230737e-05
+  modalities:
+  - dynamic
+  - static
+  num_bins: 10
+  num_risks: 1
+  param_count: 185674
+sr/mimiciv/transformer-mm:
+  effective_hparams:
+    alpha: 0.8805451133911212
+    aux_recon: false
+    batch_size: 128
+    d_model: 64
+    encoder_dropout: 0.08336938607757159
+    ff_dim: 512
+    head_dropout: 0.0032833988860264673
+    head_hidden: 16
+    icd_bottleneck: 128
+    input_width: 320
+    lr: 0.0009049911227773814
+    n_heads: 2
+    n_layers: 4
+    num_bins: 10
+    num_risks: 1
+    pooling: mean
+    radiology_bottleneck: 128
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 0.004281621174994443
+  modalities:
+  - dynamic
+  - static
+  - icd
+  - radiology
+  num_bins: 10
+  num_risks: 1
+  param_count: 526938
+transfer/eicu_to_mimiciv/cox:
+  effective_hparams:
+    l1_ratio: 0.0
+    n_features: 2
+    penalizer: 0.615848211066026
+  modalities: null
+  num_bins: null
+  num_risks: null
+  param_count: null
+transfer/eicu_to_mimiciv/deephit:
+  effective_hparams:
+    alpha_rank: 0.5
+    batch_size: 32
+    cs_dims:
+    - 200
+    - 200
+    dropout: 0.10157575007260043
+    lr: 3.681161079612744e-05
+    num_bins: 10
+    num_risks: 1
+    shared_dims:
+    - 50
+    - 50
+    weight_decay: 4.277903130522944e-06
+  modalities: null
+  num_bins: 10
+  num_risks: 1
+  param_count: 56510
+transfer/eicu_to_mimiciv/dynamic_deephit:
+  effective_hparams:
+    alpha: 0.011205151716426859
+    batch_size: 64
+    cs_hidden: 50
+    dropout: 0.47088813491021264
+    gamma: 1.0715737720018321
+    lr: 3.9772492907435765e-05
+    num_bins: 10
+    num_risks: 1
+    rnn_hidden: 50
+    rnn_layers: 1
+    weight_decay: 1.058450929244754e-07
+  modalities: null
+  num_bins: 10
+  num_risks: 1
+  param_count: 18514
+transfer/eicu_to_mimiciv/dysurv:
+  effective_hparams:
+    alpha_ae: 1.0
+    alpha_kl: 0.01
+    alpha_surv: 1.0
+    batch_size: 64
+    dropout: 0.3
+    encoded_features: 64
+    lr: 0.0002472661821977645
+    num_bins: 10
+    num_risks: 1
+    pos_weight: 1.0
+    weight_decay: 7.49212141135424e-05
+  modalities: null
+  num_bins: 10
+  num_risks: 1
+  param_count: 189334
+transfer/eicu_to_mimiciv/transformer:
+  effective_hparams:
+    alpha: 0.7991655187716188
+    aux_recon: false
+    batch_size: 64
+    d_model: 128
+    encoder_dropout: 0.2045054130019357
+    ff_dim: 128
+    head_dropout: 0.14484126721113175
+    head_hidden: 64
+    icd_bottleneck: none
+    input_width: 25
+    lr: 0.0009285561122773805
+    n_heads: 8
+    n_layers: 3
+    num_bins: 10
+    num_risks: 1
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 2.2345162057381e-05
+  modalities: null
+  num_bins: 10
+  num_risks: 1
+  param_count: 340426
+transfer/eicu_to_mimiciv_target/dynamic_deephit:
+  effective_hparams:
+    alpha: 0.14187079131473238
+    batch_size: 32
+    cs_hidden: 50
+    dropout: 0.056364306455065
+    gamma: 7.220917699605245
+    lr: 1.1977759384712282e-05
+    num_bins: 10
+    num_risks: 1
+    rnn_hidden: 100
+    rnn_layers: 2
+    weight_decay: 1.3527821070347605e-06
+  modalities: null
+  num_bins: 10
+  num_risks: 1
+  param_count: 57714
+transfer/eicu_to_mimiciv_target/transformer:
+  effective_hparams:
+    alpha: 0.8804172040023087
+    aux_recon: false
+    batch_size: 64
+    d_model: 64
+    encoder_dropout: 0.034583497727569024
+    ff_dim: 128
+    head_dropout: 0.3487143865722818
+    head_hidden: 64
+    icd_bottleneck: none
+    input_width: 25
+    lr: 0.0006901845408537135
+    n_heads: 8
+    n_layers: 1
+    num_bins: 10
+    num_risks: 1
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 0.0003725688126549446
+  modalities: null
+  num_bins: 10
+  num_risks: 1
+  param_count: 50634

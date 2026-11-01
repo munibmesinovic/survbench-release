@@ -1,0 +1,98 @@
+dataset:
+  name: mimiciv
+  version: "3.1"
+  base_dir: raw/mimiciv
+  cache_dir: cache/mimiciv
+
+  files:
+    icustays: icu/icustays.csv.gz
+    patients: hosp/patients.csv.gz
+    admissions: hosp/admissions.csv.gz
+    timeseries_vitals: icu/chartevents.csv.gz
+    timeseries_lab: hosp/labevents.csv.gz
+    icd_codes: hosp/diagnoses_icd.csv.gz
+    radiology_embeddings: radiology.csv
+
+  cohort:
+    min_age: 18
+    max_age: 120
+    min_stay_hours: 24
+
+  competing_risks:
+    enabled: true
+    outcome_mapping:
+      0: "Censored (truncated at H, or observation ended earlier)"
+      1: "In-ICU death"
+      2: "ICU discharge alive, died by H"
+      3: "ICU discharge alive, alive at H"
+    post_icu_death_source: "mimiciv:admissions.deathtime"
+
+preprocessing:
+  mask_post_event_windows: true
+  num_windows: 6
+  window_size_hours: 4
+  max_hours: 24
+  max_carry_forward_hours: 24
+  max_horizon_hours: 240
+  n_time_bins: 10
+  discretisation_method: quantiles
+  missingness_threshold: 0.01
+  event_col: event
+  duration_col: duration
+  landmarking:
+    enabled: false
+  imputation:
+    static: mean
+    dynamic: zero
+  scaling:
+    method: standard
+    z_clip: 10.0
+
+splits:
+  train: 0.7
+  val: 0.1
+  test: 0.2
+  seed: 42
+  split_by: patient
+
+modalities:
+  timeseries: true
+  static: true
+  icd: true
+  radiology: true
+
+icd_processing:
+  top_n_codes: 500
+
+radiology_processing:
+  model_name: yikuan8/Clinical-Longformer
+  max_length: 1024
+  batch_size: 32
+  pooling: mean
+
+compute:
+  backend: cpu
+
+output:
+  dir: arrays/cr_mimiciv
+  benchmark_version: v2-adm
+  prefix: mimiciv
+  save_format: numpy
+
+  files:
+    x_train: x_train_mimiciv.npy
+    x_val: x_val_mimiciv.npy
+    x_test: x_test_mimiciv.npy
+    y_train: y_train_surv_mimiciv.p
+    y_val: y_val_surv_mimiciv.p
+    durations_test: durations_test_mimiciv.npy
+    events_test: events_test_mimiciv.npy
+    cuts: cuts_mimiciv.npy
+    out_features: out_features_mimiciv.npy
+    n_events: n_events_mimiciv.npy
+    feature_names: feature_names_mimiciv.pkl
+    modality_info: modality_info_mimiciv.pkl
+    scaler: scaler_mimiciv.pkl
+    train_mask: x_train_mimiciv_mask.npy
+    val_mask: x_val_mimiciv_mask.npy
+    test_mask: x_test_mimiciv_mask.npy
