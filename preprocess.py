@@ -7,6 +7,8 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 
 from models.baselines._data import load_config
+from models.baselines._runtime import split_config
+from survbench import registry
 
 
 def _resolve(value, override):
@@ -17,17 +19,20 @@ def _resolve(value, override):
 
 
 def main():
+    registry.load_plugins()
     ap = argparse.ArgumentParser()
+    registry.add_plugin_argument(ap)
     ap.add_argument("--config", required=True)
     ap.add_argument("--base-dir", default=None)
     ap.add_argument("--cache-dir", default=None)
     ap.add_argument("--out-dir", default=None)
     ap.add_argument("--radiology-csv", default=None)
+    ap.add_argument("--split-seed", type=int, default=None)
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args()
 
-    config = load_config(args.config)
+    config = split_config(load_config(args.config), args.split_seed)
     if args.radiology_csv is not None:
         config.setdefault("dataset", {}).setdefault("files", {})[
             "radiology_embeddings"] = str(

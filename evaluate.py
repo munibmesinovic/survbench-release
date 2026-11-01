@@ -1,5 +1,7 @@
 import argparse
+import inspect
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -8,44 +10,58 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 
-from models.baselines import _checkpoint, _data
-from models.baselines._runtime import (ALL_DATASETS, ARMS, IN_DOMAIN_ARMS,
-                                       SEEDS, _set_seed, cells,
-                                       checkpoint_path, config_path,
-                                       is_summary, load_hparams,
-                                       registry_key)
-
-PREDICTORS = {
-    "cox": _checkpoint._predict_cox,
-    "deephit": _checkpoint._predict_deephit,
-    "dynamic_deephit": _checkpoint._predict_dynamic_deephit,
-    "dysurv": _checkpoint._predict_dysurv,
-    "transformer": _checkpoint._predict_transformer,
-}
+from models.baselines._runtime import (ARMS, IN_DOMAIN_ARMS, SEEDS, _set_seed,
+                                       all_datasets, cell_config, cells,
+                                       checkpoint_path, is_summary,
+                                       load_hparams, registry_key, run_path)
+from survbench import registry
 
 
-def evaluate_cell(arm, dataset, model, seed, entry, device="cpu"):
-    config = _data.load_config(str(config_path(arm, dataset)))
-    ckpt = checkpoint_path(arm, dataset, model, seed)
+def has_predictor(model):
+    return (registry.model_predictor(registry_key(model)) is not None
+            and not is_summary(model))
+
+
+def evaluate_cell(arm, dataset, model, seed, entry, device="cpu", root=None,
+                  split_seed=None):
+    config = cell_config(arm, dataset, split_seed)
+    ckpt = checkpoint_path(arm, dataset, model, seed, root)
     if not ckpt.exists():
         return None
     _set_seed(seed)
     shipped = {"effective_hparams": entry.get("effective_hparams") or {}}
     if entry.get("param_count") is not None:
         shipped["training"] = {"param_count": entry["param_count"]}
-    base = registry_key(model)
-    common = {"config": config, "checkpoint": ckpt, "shipped_json": shipped}
-    if base == "cox":
-        payload = PREDICTORS[base](seed=seed, **common)
-    elif base in ("deephit", "dynamic_deephit"):
-        payload = PREDICTORS[base](device=device, **common)
-    elif base == "dysurv":
-        payload = PREDICTORS[base](device=device, seed=seed, **common)
-    else:
-        modalities = entry.get("modalities") or ["dynamic", "static"]
-        payload = PREDICTORS[base](device=device, seed=seed,
-                                   modalities=tuple(modalities), **common)
+    predictor = registry.model_predictor(registry_key(model))
+    optional = {"device": device, "seed": seed,
+                "modalities": tuple(entry.get("modalities") or ["dynamic", "static"])}
+    accepted = inspect.signature(predictor).parameters
+    payload = predictor(config=config, checkpoint=ckpt, shipped_json=shipped,
+                        **{k: v for k, v in optional.items() if k in accepted})
     return payload["metrics_test"]
+
+
+def evaluate_run(arm, dataset, model, seed, runs):
+    path = run_path(runs, arm, dataset, model, seed)
+    if not path.exists():
+        return None
+    with open(path) as fh:
+        return json.load(fh)["test"]
+
+
+def run_cells(runs, arms, dataset=None, model=None):
+    names = "|".join(re.escape(d) for d in sorted(all_datasets(), key=len, reverse=True))
+    pattern = re.compile(rf"^(.+?)_({names})_seed(\d+)\.json$")
+    found = set()
+    for arm in arms:
+        for path in (Path(runs) / arm).glob("*_seed*.json"):
+            m = pattern.match(path.name)
+            if m is None:
+                continue
+            if (dataset and m[2] != dataset) or (model and m[1] != model):
+                continue
+            found.add((arm, m[2], m[1]))
+    return sorted(found)
 
 
 def flatten(block, prefix=""):
@@ -75,14 +91,21 @@ def aggregate(per_seed):
 
 
 def main():
+    registry.load_plugins()
     ap = argparse.ArgumentParser()
+    registry.add_plugin_argument(ap)
     ap.add_argument("--arm", choices=[*ARMS, "both", "all"], default="both")
-    ap.add_argument("--dataset", choices=list(ALL_DATASETS))
+    ap.add_argument("--dataset", choices=list(all_datasets()))
     ap.add_argument("--model")
-    ap.add_argument("--seeds", type=int, nargs="*", default=list(SEEDS))
+    ap.add_argument("--seeds", type=int, nargs="*")
     ap.add_argument("--device", default="cuda")
+    ap.add_argument("--runs")
+    ap.add_argument("--checkpoints")
+    ap.add_argument("--split-seed", type=int)
     ap.add_argument("--out", default="metrics")
     args = ap.parse_args()
+    if args.runs and args.checkpoints:
+        ap.error("use --runs or --checkpoints, not both")
 
     if args.arm == "both":
         arms = IN_DOMAIN_ARMS
@@ -91,16 +114,26 @@ def main():
     else:
         arms = (args.arm,)
     hparams = load_hparams()
+    if args.runs or args.checkpoints:
+        todo = run_cells(args.runs or args.checkpoints, arms, args.dataset,
+                         args.model)
+    else:
+        todo = list(cells(hparams, arms, args.dataset, args.model))
     results = {}
-    for arm, dataset, model in cells(hparams, arms, args.dataset, args.model):
-        if registry_key(model) not in PREDICTORS or is_summary(model):
+    for arm, dataset, model in todo:
+        if not args.runs and not has_predictor(model):
             print(f"{arm}/{dataset}/{model}: no checkpoint predictor, skipped")
             continue
-        entry = hparams[f"{arm}/{dataset}/{model}"]
+        entry = hparams.get(f"{arm}/{dataset}/{model}") or {}
         per_seed = {}
-        for seed in args.seeds:
-            block = evaluate_cell(arm, dataset, model, seed, entry,
-                                  device=args.device)
+        for seed in args.seeds or entry.get("seeds") or SEEDS:
+            if args.runs:
+                block = evaluate_run(arm, dataset, model, seed, args.runs)
+            else:
+                block = evaluate_cell(arm, dataset, model, seed, entry,
+                                      device=args.device,
+                                      root=args.checkpoints,
+                                      split_seed=args.split_seed)
             if block is not None:
                 per_seed[seed] = block
         if not per_seed:

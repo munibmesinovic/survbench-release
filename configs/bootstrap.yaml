@@ -1,0 +1,141 @@
+master_seed: 20261006
+groups:
+  cr/mimiciv:
+    index: 0
+    models:
+      cox: [1, 2, 13, 42, 2024]
+      deephit: [1, 2, 13, 42, 2024]
+      cox-summary: [1, 2, 13, 42, 2024]
+      deephit-summary: [1, 2, 13, 42, 2024]
+      dynamic_deephit: [1, 2, 13, 42, 2024]
+      dysurv: [1, 2, 13, 42, 2024]
+      transformer: [1, 2, 13, 42, 2024]
+      transformer-mm: [1, 2, 13, 42, 2024]
+  cr/eicu:
+    index: 1
+    models:
+      cox: [1, 2, 13, 42, 2024]
+      deephit: [1, 2, 13, 42, 2024]
+      cox-summary: [1, 2, 13, 42, 2024]
+      deephit-summary: [1, 2, 13, 42, 2024]
+      dynamic_deephit: [1, 2, 13, 42, 2024]
+      dysurv: [1, 2, 13, 42, 2024]
+      transformer: [1, 2, 13, 42, 2024]
+  cr/hirid:
+    index: 2
+    models:
+      cox: [1, 2, 13, 42, 2024]
+      deephit: [1, 2, 13, 42, 2024]
+      cox-summary: [1, 2, 13, 42, 2024]
+      deephit-summary: [1, 2, 13, 42, 2024]
+      dynamic_deephit: [1, 2, 13, 42, 2024]
+      dysurv: [1, 2, 13, 42, 2024]
+      transformer: [1, 2, 13, 42, 2024]
+  sr/mimiciv:
+    index: 4
+    models:
+      cox: [1, 2, 13, 42, 2024]
+      deephit: [1, 2, 13, 42, 2024]
+      transformer-static: [1, 2, 13, 42, 2024]
+      cox-summary: [1, 2, 13, 42, 2024]
+      deephit-summary: [1, 2, 13, 42, 2024]
+      dynamic_deephit: [1, 2, 13, 42, 2024]
+      dysurv: [1, 2, 13, 42, 2024]
+      transformer: [1, 2, 13, 42, 2024]
+      transformer-mm: [1, 2, 13, 42, 2024]
+  sr/eicu:
+    index: 5
+    models:
+      cox: [1, 2, 13, 42, 2024]
+      deephit: [1, 2, 13, 42, 2024]
+      transformer-static: [1, 2, 13, 42, 2024]
+      cox-summary: [1, 2, 13, 42, 2024]
+      deephit-summary: [1, 2, 13, 42, 2024]
+      dynamic_deephit: [1, 2, 13, 42, 2024]
+      dysurv: [1, 2, 13, 42, 2024]
+      transformer: [1, 2, 13, 42, 2024]
+  sr/hirid:
+    index: 6
+    models:
+      cox: [1, 2, 13, 42, 2024]
+      deephit: [1, 2, 13, 42, 2024]
+      transformer-static: [1, 2, 13, 42, 2024]
+      cox-summary: [1, 2, 13, 42, 2024]
+      deephit-summary: [1, 2, 13, 42, 2024]
+      dynamic_deephit: [1, 2, 13, 42, 2024]
+      dysurv: [1, 2, 13, 42, 2024]
+      transformer: [1, 2, 13, 42, 2024]
+  cr_lmk/mimiciv:
+    index: 8
+    landmarks: [6, 12, 24, 48, 72]
+    models:
+      cox: [1, 2, 13, 42, 2024]
+      deephit: [1, 2, 13, 42, 2024]
+      cox-summary: [1, 2, 13, 42, 2024]
+      deephit-summary: [1, 2, 13, 42, 2024]
+      survtrace-summary: [1, 2, 13, 42, 2024]
+      dynamic_deephit: [1, 2, 13, 42, 2024]
+      dysurv: [1, 2, 13, 42, 2024]
+      survlatent_ode: [1, 2024]
+      transformer: [1, 2, 13, 42, 2024]
+      transformer-mm: [1, 2, 13, 42, 2024]
+  cr_lmk/mcmed:
+    index: 9
+    landmarks: [2, 3, 6]
+    models:
+      cox: [1, 2, 13, 42, 2024]
+      deephit: [1, 2, 13, 42, 2024]
+      cox-summary: [1, 2, 13, 42, 2024]
+      deephit-summary: [1, 2, 13, 42, 2024]
+      survtrace-summary: [1, 2, 13, 42, 2024]
+      dynamic_deephit: [1, 2, 13, 42, 2024]
+      dysurv: [1, 2, 13, 42, 2024]
+      survlatent_ode: [1, 2, 13, 42, 2024]
+      transformer: [1, 2, 13, 42, 2024]
+      transformer-mm: [1, 2, 13, 42, 2024]
+  cr_lmk/eicu:
+    index: 10
+    landmarks: [6, 24]
+    models:
+      cox: [1, 2, 13, 42, 2024]
+      deephit: [1, 2, 13, 42, 2024]
+      cox-summary: [1, 2, 13, 42, 2024]
+      deephit-summary: [1, 2, 13, 42, 2024]
+      survtrace-summary: [1, 2, 13, 42, 2024]
+      dynamic_deephit: [1, 2, 13, 42, 2024]
+      dysurv: [1, 2, 13, 42, 2024]
+      transformer: [1, 2, 13, 42, 2024]
+  cr_lmk/hirid:
+    index: 11
+    landmarks: [24]
+    models:
+      cox: [1, 2, 13, 42, 2024]
+      deephit: [1, 2, 13, 42, 2024]
+      cox-summary: [1, 2, 13, 42, 2024]
+      deephit-summary: [1, 2, 13, 42, 2024]
+      survtrace-summary: [1, 2, 13, 42, 2024]
+      dynamic_deephit: [1, 2, 13, 42, 2024]
+      dysurv: [1, 2, 13, 42, 2024]
+      transformer: [1, 2, 13, 42, 2024]
+differences:
+  - {group: cr/mimiciv, a: transformer, b: dynamic_deephit}
+  - {group: cr/mimiciv, a: transformer-mm, b: transformer}
+  - {group: cr/eicu, a: transformer, b: dynamic_deephit}
+  - {group: cr/hirid, a: transformer, b: dynamic_deephit}
+  - {group: sr/mimiciv, a: transformer, b: dynamic_deephit}
+  - {group: sr/mimiciv, a: transformer-mm, b: transformer}
+  - {group: sr/mimiciv, a: deephit-summary, b: transformer}
+  - {group: sr/eicu, a: transformer, b: dynamic_deephit}
+  - {group: sr/eicu, a: deephit-summary, b: transformer}
+  - {group: sr/hirid, a: transformer, b: dynamic_deephit}
+  - {group: sr/hirid, a: deephit-summary, b: transformer}
+  - {group: cr_lmk/mimiciv, a: transformer, b: dynamic_deephit}
+  - {group: cr_lmk/mimiciv, a: transformer-mm, b: transformer}
+  - {group: cr_lmk/mimiciv, a: deephit-summary, b: transformer}
+  - {group: cr_lmk/mcmed, a: transformer, b: dynamic_deephit}
+  - {group: cr_lmk/mcmed, a: transformer-mm, b: survtrace-summary, landmarks: [2]}
+  - {group: cr_lmk/mcmed, a: transformer-mm, b: survlatent_ode, landmarks: [3, 6]}
+  - {group: cr_lmk/eicu, a: transformer, b: dynamic_deephit}
+  - {group: cr_lmk/eicu, a: deephit-summary, b: transformer}
+  - {group: cr_lmk/hirid, a: transformer, b: dynamic_deephit}
+  - {group: cr_lmk/hirid, a: deephit-summary, b: transformer}

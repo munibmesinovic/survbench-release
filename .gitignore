@@ -4,6 +4,8 @@ arrays/*
 /tuning/
 metrics.csv
 metrics.json
+bootstrap.csv
+bootstrap.json
 raw/
 cache/
 __pycache__/

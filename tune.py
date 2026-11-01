@@ -11,9 +11,10 @@ from typing import Any, Dict, Optional, Sequence
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 
-from models.baselines import _data
-from models.baselines._runtime import (ALL_DATASETS, ARMS, cells, config_path,
-                                       load_hparams, registry_key)
+from models.baselines._runtime import (ARMS, all_datasets, cell_config,
+                                       is_summary, load_hparams, modalities_of,
+                                       registry_key)
+from survbench import registry
 from survbench.core.arms import tuning_arm_of
 from survbench.tuning.artifact import artifact_key_for_config, write_artifact
 from survbench.tuning.search import (SearchResult, carve_out_reason_for,
@@ -174,13 +175,15 @@ def tune_cell(model: str, config: dict, modalities: Sequence[str],
 def cell_modalities(model: str, entry: dict) -> tuple:
     if registry_key(model) != "transformer":
         return DEFAULT_MODALITIES
-    return tuple(entry.get("modalities") or DEFAULT_MODALITIES)
+    return tuple(entry.get("modalities") or modalities_of(model) or DEFAULT_MODALITIES)
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
+    registry.load_plugins(argv)
     ap = argparse.ArgumentParser()
+    registry.add_plugin_argument(ap)
     ap.add_argument("--arm", choices=list(ARMS), required=True)
-    ap.add_argument("--dataset", choices=list(ALL_DATASETS), required=True)
+    ap.add_argument("--dataset", choices=list(all_datasets()), required=True)
     ap.add_argument("--model", required=True)
     ap.add_argument("--n-trials", type=int, default=20)
     ap.add_argument("--sampler-seed", type=int, default=0)
@@ -189,20 +192,20 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap.add_argument("--out-dir", default=str(ROOT / "tuning"))
     args = ap.parse_args(argv)
 
-    hparams = load_hparams()
     key = f"{args.arm}/{args.dataset}/{args.model}"
-    if key not in hparams:
-        available = sorted(m for _a, _d, m in cells(
-            hparams, (args.arm,), args.dataset))
-        ap.error(f"no such cell {key}. Models for {args.arm}/{args.dataset}: "
-                 f"{available}")
+    if args.arm not in registry.DATASETS[args.dataset]["configs"]:
+        ap.error(f"{args.dataset} has no {args.arm} config")
+    if is_summary(args.model):
+        ap.error("tuning the summary input is not supported")
 
     base = registry_key(args.model)
+    if registry.model_space(base) is None:
+        ap.error(f"{base} has no search space")
     if args.selection and args.selection.endswith("nll") and base in NO_VAL_NLL:
         ap.error(f"{base} has no held-out likelihood, so --selection {args.selection} is not available; leave --selection unset.")
 
-    config = _data.load_config(str(config_path(args.arm, args.dataset)))
-    modalities = cell_modalities(args.model, hparams[key])
+    config = cell_config(args.arm, args.dataset)
+    modalities = cell_modalities(args.model, load_hparams().get(key, {}))
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 

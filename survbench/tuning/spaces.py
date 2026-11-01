@@ -138,12 +138,10 @@ _SPACES: Dict[str, SearchSpace] = {
 
 def space_for(model: str, modalities: Sequence[str] = ("dynamic", "static")
               ) -> SearchSpace:
-    try:
-        base = _SPACES[model]
-    except KeyError:
-        raise KeyError(
-            f"No search space for model {model!r}. Known: "
-            f"{sorted(_SPACES)}") from None
+    from survbench import registry
+    base = registry.model_space(model) or _SPACES.get(model)
+    if base is None:
+        raise KeyError(f"No search space for model {model!r}")
     if model != "transformer":
         return base
 

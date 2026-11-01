@@ -1,5 +1,6 @@
 import argparse
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -7,14 +8,15 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 
 from models.baselines import _data
-from models.baselines._runtime import (ALL_DATASETS, ARMS, SEEDS, _set_seed,
-                                       cells, config_path, file_model_name,
-                                       input_mode_of, invoke, is_multimodal,
-                                       is_summary, load_hparams, registry_key,
-                                       runner_kwargs)
+from models.baselines._runtime import (ARMS, SEEDS, _set_seed, all_datasets,
+                                       cell_config, cells, input_mode_of,
+                                       invoke, load_hparams, modalities_of,
+                                       registry_key, run_path, runner_kwargs,
+                                       runs_root)
+from survbench import registry
 
 DEFAULT_MODALITIES = ("dynamic", "static")
-MULTIMODAL_MODALITIES = ("dynamic", "static", "icd", "radiology")
+PENALIZER_GRID = (0.01, 0.1, 1.0)
 
 
 def stamp_arm(result: dict, config: dict) -> dict:
@@ -29,7 +31,7 @@ def cell_modalities(model: str, entry: dict) -> tuple:
         return DEFAULT_MODALITIES
     if entry.get("modalities"):
         return tuple(entry["modalities"])
-    return MULTIMODAL_MODALITIES if is_multimodal(model) else DEFAULT_MODALITIES
+    return modalities_of(model) or DEFAULT_MODALITIES
 
 
 def assert_echo_matches(model: str, wanted: dict, echo) -> None:
@@ -55,8 +57,8 @@ def assert_echo_matches(model: str, wanted: dict, echo) -> None:
             + ".")
 
 
-def train_cell(arm, dataset, model, seed, entry, out_dir):
-    config = _data.load_config(str(config_path(arm, dataset)))
+def train_cell(arm, dataset, model, seed, entry, out_dir, split_seed=None):
+    config = cell_config(arm, dataset, split_seed)
     winner = runner_kwargs(model, entry.get("effective_hparams"))
     modalities = cell_modalities(model, entry)
     save_dir = Path(out_dir) / arm
@@ -84,26 +86,61 @@ def train_cell(arm, dataset, model, seed, entry, out_dir):
             f"{model} was asked for input_mode={input_mode!r} and reported "
             f"{result.get('input_mode')!r}.")
     stamp_arm(result, config)
-    if is_summary(model):
-        result["model"] = model
-    else:
-        result["model"] = file_model_name(registry_key(model),
-                                          is_multimodal(model))
+    result["model"] = model
     result["seed"] = seed
     with open(save_dir / f"{tag}.json", "w") as fh:
         json.dump(result, fh, indent=2, default=str)
     return result
 
 
+def read_run(path):
+    try:
+        with open(path) as fh:
+            return json.load(fh)
+    except (OSError, ValueError):
+        return None
+
+
+def with_penalizer(entry, penalizer):
+    hp = dict(entry.get("effective_hparams") or {}, penalizer=penalizer)
+    return dict(entry, effective_hparams=hp)
+
+
+def select_penalizer(arm, dataset, model, entry, out_dir, split_seed):
+    val = {}
+    for pen in PENALIZER_GRID:
+        sub = Path(out_dir) / "coxpen" / f"pen{pen:g}"
+        result = read_run(run_path(sub, arm, dataset, model, 42))
+        if result is None:
+            result = train_cell(arm, dataset, model, 42,
+                                with_penalizer(entry, pen), sub, split_seed)
+        ctd = float(result["metrics"]["val"]["ctd"])
+        val[pen] = -math.inf if math.isnan(ctd) else ctd
+    chosen = max(PENALIZER_GRID, key=val.get)
+    print(f"{arm}/{dataset}/{model} split {split_seed}: penalizer {chosen:g}, "
+          f"val ctd {val[chosen]:.6f}")
+    return with_penalizer(entry, chosen)
+
+
+def cell_entry(arm, dataset, model, entry, out_dir, split_seed):
+    if split_seed is not None and model == "cox-summary":
+        return select_penalizer(arm, dataset, model, entry, out_dir, split_seed)
+    return entry
+
+
 def main():
+    registry.load_plugins()
     ap = argparse.ArgumentParser()
+    registry.add_plugin_argument(ap)
     ap.add_argument("--arm", choices=list(ARMS), required=True)
-    ap.add_argument("--dataset", choices=list(ALL_DATASETS), required=True)
+    ap.add_argument("--dataset", choices=list(all_datasets()), required=True)
     ap.add_argument("--model", required=True)
     ap.add_argument("--seed", type=int, default=42, choices=list(SEEDS))
-    ap.add_argument("--out-dir", default=str(ROOT / "runs"))
+    ap.add_argument("--split-seed", type=int)
+    ap.add_argument("--out-dir")
     ap.add_argument("--defaults", action="store_true")
     args = ap.parse_args()
+    out_dir = args.out_dir or runs_root(args.split_seed)
 
     hparams = load_hparams()
     key = f"{args.arm}/{args.dataset}/{args.model}"
@@ -117,8 +154,11 @@ def main():
         ap.error(f"configs/hparams.yaml has no entry for {key}. Models for {args.arm}/{args.dataset}: {available}. "
                  f"Use --defaults to train at default hyperparameters.")
 
+    if not args.defaults:
+        entry = cell_entry(args.arm, args.dataset, args.model, entry, out_dir,
+                           args.split_seed)
     result = train_cell(args.arm, args.dataset, args.model, args.seed,
-                        entry, args.out_dir)
+                        entry, out_dir, args.split_seed)
     test = result.get("test") or {}
     flat = test.get("mean") or test.get("risk1") or {}
     print(f"{key} seed{args.seed}: "

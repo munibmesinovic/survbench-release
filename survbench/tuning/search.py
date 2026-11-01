@@ -14,7 +14,8 @@ _ROOT = Path(__file__).resolve().parent.parent.parent
 if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
-from models.baselines._runtime import REGISTRY, _set_seed
+from models.baselines._runtime import _set_seed
+from survbench import registry
 from survbench.tuning.spaces import SearchSpace, space_for
 
 __all__ = [
@@ -28,9 +29,6 @@ _MAXIMISED = frozenset({"ctd", "auc", "auc_integrated", "cindex", "c_index"})
 
 
 DEFAULT_SELECTION = "val.nll"
-
-
-_DEFAULT_SELECTION = {"cox": "val.ctd"}
 
 
 _GRID_MODELS = frozenset({"cox"})
@@ -74,10 +72,14 @@ class SearchResult:
     carve_out_reason: str = ""
 
 
+def _declared_selection(model: str) -> str:
+    return (registry.MODELS.get(model) or {}).get("selection") or DEFAULT_SELECTION
+
+
 def selection_for(model: str, selection: Optional[str] = None) -> str:
     if selection is not None:
         return selection
-    return _DEFAULT_SELECTION.get(model, DEFAULT_SELECTION)
+    return _declared_selection(model)
 
 
 def sampler_for(model: str) -> str:
@@ -88,7 +90,7 @@ def carve_out_reason_for(model: str, selection: Optional[str] = None) -> str:
     reason = _CARVE_OUT_REASON.get(model, "")
     if not reason:
         return ""
-    declared = _DEFAULT_SELECTION.get(model, DEFAULT_SELECTION)
+    declared = _declared_selection(model)
     resolved = selection_for(model, selection)
     if resolved != declared:
         reason += (
@@ -97,7 +99,7 @@ def carve_out_reason_for(model: str, selection: Optional[str] = None) -> str:
 
 
 def _invoke_runner(model: str, config: dict, **kwargs) -> dict:
-    return REGISTRY[model](config, **kwargs)
+    return registry.model_module(model).run(config, **kwargs)
 
 
 def _direction_of(selection: str) -> str:

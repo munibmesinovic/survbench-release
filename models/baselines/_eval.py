@@ -9,6 +9,7 @@ import pandas as pd
 from pycox.evaluation import EvalSurv
 
 
+from survbench import registry
 from survbench.core.landmarks import (
     MCMED_HORIZONS_HOURS, MORTALITY_HORIZONS_HOURS,
 )
@@ -41,6 +42,9 @@ _LANDMARK_WINDOWS_BY_DATASET: dict[str, tuple[float, ...]] = {
 
 
 def landmark_windows_for(dataset: str) -> tuple[float, ...]:
+    registered = registry.window_hours(dataset)
+    if registered is not None:
+        return registered
     try:
         return _LANDMARK_WINDOWS_BY_DATASET[dataset]
     except KeyError:

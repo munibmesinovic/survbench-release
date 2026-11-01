@@ -5,6 +5,7 @@ from typing import Dict, Tuple
 import numpy as np
 import pandas as pd
 
+from survbench import registry
 from survbench.core.landmarks import (
     MCMED_GRID_SECONDS, MORTALITY_GRID_SECONDS, expand_grid,
 )
@@ -29,11 +30,14 @@ def landmarking_enabled(config: dict) -> bool:
 
 
 def grid_for(dataset: str) -> Tuple[np.int64, ...]:
+    registered = registry.landmark_hours(dataset)
+    if registered is not None:
+        return tuple(np.int64(round(h * _SECONDS_PER_HOUR)) for h in registered)
     try:
         return GRIDS[dataset]
     except KeyError:
         raise ValueError(
-            f"no landmark grid for dataset {dataset!r}; add one to GRIDS") from None
+            f"no landmark grid for dataset {dataset!r}; pass landmarks to register_dataset") from None
 
 
 def observation_horizon_hours(config: dict, dataset: str) -> int:

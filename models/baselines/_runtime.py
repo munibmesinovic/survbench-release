@@ -10,6 +10,8 @@ from typing import Any, Optional
 import numpy as np
 import yaml
 
+from survbench import registry
+
 
 def git_commit(repo_root: "Path | str" = ".") -> str:
     try:
@@ -154,38 +156,47 @@ class WallClock:
 
 
 def _model_modules():
-    from models.baselines import cox, deephit, dynamic_deephit, dysurv, transformer
-    from models.baselines import survlatent_ode, survtrace
-    return {
-        "cox": cox,
-        "deephit": deephit,
-        "dynamic_deephit": dynamic_deephit,
-        "dysurv": dysurv,
-        "transformer": transformer,
-        "survtrace": survtrace,
-        "survlatent_ode": survlatent_ode,
-    }
+    return {name: registry.model_module(name) for name in registry.MODELS}
 
 
 MULTIMODAL_SUFFIX = "-mm"
 SUMMARY_SUFFIX = "-summary"
 SUMMARY_MODELS = ("cox", "deephit", "survtrace")
+MODALITY_VARIANTS = {
+    "mm": ("dynamic", "static", "icd", "radiology"),
+    "mmbase": ("dynamic", "static"),
+    "icd": ("dynamic", "static", "icd"),
+    "rad": ("dynamic", "static", "radiology"),
+    "static": ("static",),
+    "ts": ("dynamic",),
+}
 
 
 def __getattr__(name):
     if name == "_MODULES":
-        value = _model_modules()
-    elif name == "REGISTRY":
-        value = {n: m.run for n, m in _model_modules().items()}
-    else:
-        raise AttributeError(name)
-    globals()[name] = value
-    return value
+        return _model_modules()
+    if name == "REGISTRY":
+        return {n: m.run for n, m in _model_modules().items()}
+    raise AttributeError(name)
+
+
+def summary_models() -> tuple:
+    return tuple(n for n, spec in registry.MODELS.items() if spec["summary"])
+
+
+def modality_variant(model: str) -> Optional[str]:
+    base, _, variant = model.partition("-")
+    return variant if base == "transformer" and variant in MODALITY_VARIANTS else None
+
+
+def modalities_of(model: str) -> Optional[tuple]:
+    variant = modality_variant(model)
+    return MODALITY_VARIANTS[variant] if variant else None
 
 
 def registry_key(model: str) -> str:
-    if is_multimodal(model):
-        return model[: -len(MULTIMODAL_SUFFIX)]
+    if modality_variant(model):
+        return "transformer"
     if is_summary(model):
         return model[: -len(SUMMARY_SUFFIX)]
     return model
@@ -202,13 +213,13 @@ def is_summary(model: str) -> bool:
 def input_mode_of(model: str) -> Optional[str]:
     base = registry_key(model)
     if is_summary(model):
-        if base not in SUMMARY_MODELS:
+        if base not in summary_models():
             raise ValueError(
                 f"{model}: the summary input is defined for "
-                f"{', '.join(SUMMARY_MODELS)} only; {base} reads the time "
+                f"{', '.join(summary_models())} only; {base} reads the time "
                 f"series itself.")
         return "summary"
-    return "static" if base in SUMMARY_MODELS else None
+    return "static" if base in summary_models() else None
 
 
 def file_model_name(model: str, multimodal: bool) -> str:
@@ -218,7 +229,7 @@ def file_model_name(model: str, multimodal: bool) -> str:
 
 
 def invoke(model: str, config: dict, **kwargs) -> dict:
-    return getattr(_model_modules()[registry_key(model)], "run")(config, **kwargs)
+    return registry.model_module(registry_key(model)).run(config, **kwargs)
 
 
 def _set_seed(seed: int) -> None:
@@ -281,8 +292,39 @@ _ECHO_ONLY = {
 }
 
 
+def all_datasets() -> tuple:
+    return tuple(registry.DATASETS)
+
+
 def config_path(arm: str, dataset: str) -> Path:
-    return ROOT / CONFIGS[(arm, dataset)]
+    try:
+        return registry.DATASETS[dataset]["configs"][arm]
+    except KeyError:
+        raise KeyError(f"no {arm} config registered for {dataset}") from None
+
+
+def split_config(config: dict, split_seed: Optional[int]) -> dict:
+    if split_seed is None:
+        return config
+    config["splits"]["seed"] = int(split_seed)
+    config["output"]["dir"] = f"{config['output']['dir']}_s{split_seed}"
+    if config["dataset"].get("cache_dir"):
+        config["dataset"]["cache_dir"] = (
+            f"{config['dataset']['cache_dir']}_s{split_seed}")
+    return config
+
+
+def cell_config(arm: str, dataset: str, split_seed: Optional[int] = None) -> dict:
+    with open(config_path(arm, dataset)) as fh:
+        return split_config(yaml.safe_load(fh), split_seed)
+
+
+def runs_root(split_seed: Optional[int] = None) -> Path:
+    return ROOT / "runs" if split_seed is None else ROOT / "runs" / f"s{split_seed}"
+
+
+def run_path(root, arm: str, dataset: str, model: str, seed: int) -> Path:
+    return Path(root) / arm / f"{model}_{dataset}_seed{seed}.json"
 
 
 def load_hparams() -> dict:
@@ -302,17 +344,18 @@ def cells(hparams: dict, arms, dataset=None, model=None):
         yield arm, ds, mdl
 
 
-def checkpoint_path(arm: str, dataset: str, model: str, seed: int) -> Path:
-    suffix = "pkl" if registry_key(model) == "cox" else "pt"
-    return ROOT / "checkpoints" / arm / f"{model}_{dataset}_seed{seed}.{suffix}"
+def checkpoint_path(arm: str, dataset: str, model: str, seed: int,
+                    root=None) -> Path:
+    suffix = registry.model_spec(registry_key(model))["checkpoint"]
+    base = ROOT / "checkpoints" if root is None else Path(root)
+    return base / arm / f"{model}_{dataset}_seed{seed}.{suffix}"
 
 
 def runner_kwargs(model: str, effective_hparams: Optional[dict]) -> dict:
     import inspect
     base = registry_key(model)
-    accepted = inspect.signature(
-        getattr(_model_modules()[base], "run")).parameters
-    echo = set(_ECHO_ALL) | set(_ECHO_ONLY[base])
+    accepted = inspect.signature(registry.model_module(base).run).parameters
+    echo = set(_ECHO_ALL) | set(registry.model_spec(base)["echo"])
     out: dict = {}
     unknown = []
     for key, value in (effective_hparams or {}).items():
@@ -324,3 +367,24 @@ def runner_kwargs(model: str, effective_hparams: Optional[dict]) -> dict:
         raise ValueError(
             f"configs/hparams.yaml records {sorted(unknown)} for {model}, which {base}.run() does not accept")
     return out
+
+
+_PREDICTED = ("cox", "deephit", "dynamic_deephit", "dysurv", "transformer")
+_SPACED = {"cox": "COX", "deephit": "DEEPHIT", "dynamic_deephit": "DYNAMIC_DEEPHIT",
+           "dysurv": "DYSURV", "transformer": "TRANSFORMER"}
+
+for _name, _echo in _ECHO_ONLY.items():
+    registry.register_model(
+        _name, f"models.baselines.{_name}",
+        predictor=(f"models.baselines._checkpoint:_predict_{_name}"
+                   if _name in _PREDICTED else None),
+        space=(f"survbench.tuning.spaces:{_SPACED[_name]}"
+               if _name in _SPACED else None),
+        echo=_echo, summary=_name in SUMMARY_MODELS,
+        selection="val.ctd" if _name == "cox" else None,
+        checkpoint="pkl" if _name == "cox" else "pt")
+
+for _ds in ALL_DATASETS:
+    registry.register_dataset(
+        _ds, configs={arm: ROOT / path for (arm, ds), path in CONFIGS.items()
+                      if ds == _ds})
