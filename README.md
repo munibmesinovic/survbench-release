@@ -5,18 +5,16 @@ Code for SurvBench. Five models
 ICU datasets and two admission-anchored arms, five seeds each, plus a
 landmarked arm on all four datasets and a cross-dataset transfer arm.
 SurvTRACE, SurvLatent ODE, and a summary input for Cox, DeepHit, and SurvTRACE
-are also included.
+are also included. We are still making edits to the release version, so bear with us!
 
 ## Setup
 
     conda env create -f environment.yml
     conda activate survbench
 
-The environment pins the CUDA 13 PyTorch build the paper used and needs an NVIDIA driver that supports CUDA 13. With it, on an NVIDIA RTX PRO 5000 Blackwell, retrained runs match the paper's to the last digit, except SurvTRACE and SurvLatent ODE on landmarked MIMIC-IV and MC-MED, which were trained on other GPUs. Other GPUs move the neural models' per-seed scores slightly.
+The environment pins the CUDA 13 PyTorch build the paper used and needs an NVIDIA driver that supports CUDA 13. Other GPUs move the neural models' per-seed scores slightly.
 
     pip install -r requirements.txt
-
-installs the same package versions on Linux, Windows, and Apple-silicon macOS with Python 3.10, without the CUDA 13 build, so the neural models' per-seed scores differ slightly from the paper's. On macOS, pip builds `ecos` from source, which needs the Xcode command-line tools.
 
 ## Reproduce the tables
 
