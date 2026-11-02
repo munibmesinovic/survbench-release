@@ -15,6 +15,7 @@ _UNIT_PATTERN = re.compile(r"\(([^)]+)\)\s*$")
 
 
 _SECONDS_PER_HOUR = 3600
+_SECONDS_PER_DAY = 86400
 
 
 _READ_CHUNK_ROWS = 2_000_000
@@ -532,7 +533,8 @@ class MCMEDDataLoader(BaseDataLoader):
 
         visits_for_join = visits_df.reset_index()[['MRN', 'CSN', 'Arrival_time']]
         merged = pmh.merge(visits_for_join, on='MRN', how='inner')
-        causal = merged[merged['Noted_date'] < merged['Arrival_time']].copy()
+        arrival_day = (merged['Arrival_time'] // _SECONDS_PER_DAY) * _SECONDS_PER_DAY
+        causal = merged[merged['Noted_date'] < arrival_day].copy()
 
 
         cohort_csns = set(self.cohort_df.index.unique())

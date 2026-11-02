@@ -955,6 +955,35 @@ cr_lmk/mcmed/transformer:
   num_bins: 10
   num_risks: 4
   param_count: 457128
+cr_lmk/mcmed/transformer-icd:
+  effective_hparams:
+    alpha: 0.5
+    aux_recon: false
+    batch_size: 128
+    d_model: 128
+    encoder_dropout: 0.1
+    ff_dim: 256
+    head_dropout: 0.3
+    head_hidden: 32
+    icd_bottleneck: none
+    input_width: 595
+    lr: 0.0001
+    n_heads: 4
+    n_layers: 3
+    num_bins: 10
+    num_risks: 4
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 1.0e-05
+  modalities:
+  - dynamic
+  - static
+  - icd
+  num_bins: 10
+  num_risks: 4
+  param_count: 521128
 cr_lmk/mcmed/transformer-mm:
   effective_hparams:
     alpha: 0.5
@@ -985,6 +1014,35 @@ cr_lmk/mcmed/transformer-mm:
   num_bins: 10
   num_risks: 4
   param_count: 619432
+cr_lmk/mcmed/transformer-rad:
+  effective_hparams:
+    alpha: 0.5
+    aux_recon: false
+    batch_size: 128
+    d_model: 128
+    encoder_dropout: 0.1
+    ff_dim: 256
+    head_dropout: 0.3
+    head_hidden: 32
+    icd_bottleneck: none
+    input_width: 863
+    lr: 0.0001
+    n_heads: 4
+    n_layers: 3
+    num_bins: 10
+    num_risks: 4
+    pooling: mean
+    radiology_bottleneck: none
+    rank_scale: 3.0
+    sigma: 0.1
+    weight_decay: 1.0e-05
+  modalities:
+  - dynamic
+  - static
+  - radiology
+  num_bins: 10
+  num_risks: 4
+  param_count: 555432
 cr_lmk/mimiciv/cox:
   effective_hparams:
     l1_ratio: 0.0
